@@ -1,0 +1,180 @@
+/* piano.css — Piano keyboard styles */
+
+.piano-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 10px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.piano-keyboard {
+  display: flex;
+  position: relative;
+  height: 200px;
+}
+
+/* ─── White keys ─── */
+.piano-key {
+  position: relative;
+  width: 60px;
+  min-width: 50px;
+  height: 200px;
+  background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 30%, #e8e8e8 100%);
+  border: 2px solid #bbb;
+  border-radius: 0 0 8px 8px;
+  cursor: pointer;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+  transition: background 0.08s, transform 0.08s, box-shadow 0.08s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15), inset 0 -2px 3px rgba(0,0,0,0.05);
+}
+
+.piano-key:active,
+.piano-key.active {
+  background: linear-gradient(180deg, #e0e0e0 0%, #d8d8d8 100%);
+  transform: translateY(2px);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.15);
+}
+
+/* ─── Black keys ─── */
+.piano-key.black {
+  width: 40px;
+  min-width: 34px;
+  height: 130px;
+  background: linear-gradient(180deg, #333 0%, #1a1a1a 100%);
+  border-color: #111;
+  margin-left: -22px;
+  margin-right: -22px;
+  z-index: 2;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.3);
+}
+
+.piano-key.black:active,
+.piano-key.black.active {
+  background: linear-gradient(180deg, #444 0%, #2a2a2a 100%);
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* ─── Key label ─── */
+.key-label {
+  font-size: 14px;
+  font-weight: 700;
+  pointer-events: none;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.piano-key.black .key-label {
+  color: #ccc;
+  font-size: 11px;
+}
+
+/* ─── Rainbow colors ─── */
+.piano-key[data-note-name="C"] { --key-color: #FF4444; }
+.piano-key[data-note-name="D"] { --key-color: #FF8C00; }
+.piano-key[data-note-name="E"] { --key-color: #FFD700; }
+.piano-key[data-note-name="F"] { --key-color: #44BB44; }
+.piano-key[data-note-name="G"] { --key-color: #4488FF; }
+.piano-key[data-note-name="A"] { --key-color: #6644CC; }
+.piano-key[data-note-name="B"] { --key-color: #AA44FF; }
+
+.piano-key .key-label {
+  color: var(--key-color, #555);
+}
+
+/* ─── Color mode: fill white keys with color ─── */
+.piano-keyboard.color-mode .piano-key:not(.black) {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--key-color) 25%, white) 0%,
+    color-mix(in srgb, var(--key-color) 15%, white) 100%
+  );
+}
+
+/* ─── Highlight / pulse glow for guided play ─── */
+.piano-key.highlight {
+  animation: keyPulse 0.8s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--key-color, #FFD700), 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.piano-key.highlight.black {
+  box-shadow: 0 0 20px var(--key-color, #FFD700), 0 4px 8px rgba(0,0,0,0.4);
+}
+
+@keyframes keyPulse {
+  0%, 100% { box-shadow: 0 0 10px var(--key-color, #FFD700), 0 4px 6px rgba(0,0,0,0.15); }
+  50% { box-shadow: 0 0 30px var(--key-color, #FFD700), 0 0 50px var(--key-color, #FFD700), 0 4px 6px rgba(0,0,0,0.15); }
+}
+
+/* ─── Correct / Wrong feedback ─── */
+.piano-key.correct {
+  background: linear-gradient(180deg, #66ee66 0%, #44cc44 100%) !important;
+  transition: background 0.1s;
+}
+
+.piano-key.wrong {
+  animation: gentleShake 0.3s ease;
+  background: linear-gradient(180deg, #ffcc88 0%, #ffbb66 100%) !important;
+}
+
+@keyframes gentleShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* ─── Disabled keys ─── */
+.piano-key.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .piano-keyboard {
+    height: 160px;
+  }
+  .piano-key {
+    width: 48px;
+    min-width: 40px;
+    height: 160px;
+  }
+  .piano-key.black {
+    width: 32px;
+    min-width: 28px;
+    height: 105px;
+    margin-left: -18px;
+    margin-right: -18px;
+  }
+  .key-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .piano-keyboard {
+    height: 140px;
+  }
+  .piano-key {
+    width: 40px;
+    min-width: 36px;
+    height: 140px;
+  }
+  .piano-key.black {
+    width: 28px;
+    min-width: 24px;
+    height: 90px;
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}

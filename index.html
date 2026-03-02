@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Piano Adventure 🎹</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/piano.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <style>
+    /* Inline critical: prevent FOUC */
+    body { opacity: 0; transition: opacity 0.3s; }
+    body.loaded { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div id="app">
+
+    <!-- ═══════ SCREEN: Daily Hub ═══════ -->
+    <div id="screen-daily-hub" class="screen active">
+      <div class="header-bar">
+        <span class="title">🎹 Piano Adventure</span>
+        <div class="stats-bar">
+          <span class="stat" id="stat-coins">🪙 <span id="coins-display">0</span></span>
+          <span class="stat" id="stat-streak">🔥 <span id="streak-display">0</span>天</span>
+          <span class="stat" id="stat-stars">⭐ <span id="stars-display">0</span></span>
+        </div>
+      </div>
+
+      <div class="daily-greeting">
+        <span class="cat-face">😺</span>
+        <h2 id="daily-greeting-text">🌅 今天的冒险</h2>
+      </div>
+
+      <div id="welcome-msg" class="welcome-message hidden">
+        <span class="welcome-emoji">😻</span>
+        <div class="welcome-text" id="welcome-text"></div>
+      </div>
+
+      <div class="action-cards">
+        <div class="action-card" id="card-warmup" onclick="Game.startWarmup()">
+          <span class="card-icon">🎮</span>
+          <div class="card-content">
+            <div class="card-title">热身游戏</div>
+            <div class="card-sub">趣味小练习 (3分钟)</div>
+          </div>
+          <span class="card-status" id="warmup-status">▶️</span>
+        </div>
+
+        <div class="action-card" id="card-practice" onclick="Game.startPractice()">
+          <span class="card-icon">🎹</span>
+          <div class="card-content">
+            <div class="card-title">开始练琴</div>
+            <div class="card-sub" id="practice-duration-label">真实练琴 (30分钟)</div>
+          </div>
+          <span class="card-status" id="practice-status">▶️</span>
+        </div>
+
+        <div class="action-card" id="card-adventure" onclick="Game.openAdventure()">
+          <span class="card-icon">🗺️</span>
+          <div class="card-content">
+            <div class="card-title">冒险地图</div>
+            <div class="card-sub">闯关赢金币</div>
+          </div>
+          <span class="card-status" id="adventure-status">🔒</span>
+        </div>
+      </div>
+
+      <div class="streak-display" id="streak-section">
+        <div class="streak-num" id="streak-num">🔥 0</div>
+        <div class="streak-label">连续练琴天数</div>
+      </div>
+
+      <!-- Quick links -->
+      <div style="display:flex; gap:12px; margin-top:16px;">
+        <button class="btn btn-primary" style="flex:1" onclick="Game.openShop()">🏪 奖励商店</button>
+        <button class="btn btn-primary" style="flex:1" onclick="Game.openAchievements()">🏆 成就</button>
+      </div>
+    </div>
+
+    <!-- ═══════ SCREEN: Warmup ═══════ -->
+    <div id="screen-warmup" class="screen">
+      <button class="back-btn" onclick="Game.goHome()">← 返回</button>
+      <div class="header-bar">
+        <span class="title">🎮 热身游戏</span>
+        <div class="stats-bar">
+          <span class="stat" id="warmup-progress-text">1/2</span>
+        </div>
+      </div>
+
+      <div class="warmup-game" id="warmup-area">
+        <!-- Warmup game content rendered by JS -->
+      </div>
+
+      <div id="warmup-piano" class="piano-container"></div>
+    </div>
+
+    <!-- ═══════ SCREEN: Practice ═══════ -->
+    <div id="screen-practice" class="screen">
+      <div class="header-bar">
+        <span class="title">🎹 练琴时间</span>
+        <div class="stats-bar"></div>
+      </div>
+
+      <div class="practice-timer">
+        <div class="timer-ring">
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <circle class="ring-bg" cx="100" cy="100" r="90"/>
+            <circle class="ring-progress" id="timer-ring-progress" cx="100" cy="100" r="90"
+              stroke-dasharray="565.48" stroke-dashoffset="0"/>
+          </svg>
+          <span class="timer-display" id="timer-display">30:00</span>
+          <span class="timer-label">剩余时间</span>
+        </div>
+      </div>
+
+      <div class="practice-tasks" id="practice-tasks">
+        <h3>📋 今日练习任务：</h3>
+        <div id="practice-task-list">
+          <!-- Tasks rendered by JS -->
+        </div>
+      </div>
+
+      <div class="practice-controls">
+        <button class="btn btn-warning" id="btn-pause" onclick="Practice.togglePause()">⏸️ 暂停</button>
+        <button class="btn btn-danger" onclick="Practice.endPractice()">🛑 结束练琴</button>
+      </div>
+
+      <!-- Melody cat companion -->
+      <div class="practice-cat" id="practice-cat">
+        <div class="cat-bubble hidden" id="cat-bubble">
+          <span id="cat-bubble-text">加油！</span>
+        </div>
+        <div class="cat-emoji" id="cat-face">😺</div>
+      </div>
+    </div>
+
+    <!-- ═══════ SCREEN: Practice Complete ═══════ -->
+    <div id="screen-practice-complete" class="screen">
+      <div class="header-bar">
+        <span class="title">🎉 练琴完成！</span>
+        <div class="stats-bar"></div>
+      </div>
+
+      <div class="text-center mt-20">
+        <div style="font-size:4rem;" id="complete-cat">😻</div>
+        <h2 id="practice-summary">今天练了 0 分钟！</h2>
+        <p style="color:#888; margin-top:8px;">太棒了！Melody 好开心！</p>
+      </div>
+
+      <!-- Parent Confirmation Gate -->
+      <div class="confirm-section" id="parent-gate">
+        <h3>📋 练习完成了吗？</h3>
+        <p style="color:#888; margin:8px 0;">请让爸爸/妈妈确认一下哦～</p>
+
+        <div class="math-gate" id="math-gate">
+          <div class="math-question" id="math-question">📐 请问 15 + 8 = ?</div>
+          <div class="math-options" id="math-options">
+            <!-- Options rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- After parent unlocks -->
+      <div class="confirm-section hidden" id="parent-confirm">
+        <h3>☑️ 练习质量评价</h3>
+        <div class="rating-buttons" id="rating-buttons">
+          <button class="rating-btn" data-rating="good" onclick="Practice.setRating('good')">😀<br>很好</button>
+          <button class="rating-btn" data-rating="ok" onclick="Practice.setRating('ok')">😊<br>还行</button>
+          <button class="rating-btn" data-rating="needwork" onclick="Practice.setRating('needwork')">😐<br>需加油</button>
+        </div>
+
+        <h3 class="mt-16">☑️ 完成的任务</h3>
+        <div id="confirm-task-list">
+          <!-- Checkable tasks rendered by JS -->
+        </div>
+
+        <button class="btn btn-success btn-block btn-large mt-20" id="btn-confirm-complete" onclick="Practice.confirmComplete()">
+          ✅ 确认完成 → 领取奖励
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════ SCREEN: Adventure Map ═══════ -->
+    <div id="screen-adventure" class="screen">
+      <button class="back-btn" onclick="Game.goHome()">← 返回</button>
+      <div class="header-bar">
+        <span class="title">🗺️ 冒险地图</span>
+        <div class="stats-bar">
+          <span class="stat">🎮 <span id="levels-remaining">3</span> 关剩余</span>
+        </div>
+      </div>
+
+      <div class="world-selector" id="world-selector">
+        <!-- World tabs rendered by JS -->
+      </div>
+
+      <div class="world-header" id="world-header">
+        <span class="world-emoji">🏠</span>
+        <div class="world-name">Melody 的家</div>
+        <div class="world-desc">认识钢琴</div>
+      </div>
+
+      <div class="level-grid" id="level-grid">
+        <!-- Level nodes rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ═══════ SCREEN: Level Play ═══════ -->
+    <div id="screen-level" class="screen">
+      <button class="back-btn" onclick="Game.backToMap()">← 返回地图</button>
+      <div class="header-bar">
+        <span class="title" id="level-title">关卡</span>
+        <div class="stats-bar">
+          <span class="stat" id="level-score-display">0</span>
+        </div>
+      </div>
+
+      <div class="level-instruction" id="level-instruction">
+        <!-- Instruction text -->
+      </div>
+
+      <div class="level-progress">
+        <div class="progress-bar"><div class="progress-fill" id="level-progress-fill" style="width:0%"></div></div>
+        <span class="progress-text" id="level-progress-text">0/5</span>
+      </div>
+
+      <!-- Gameplay area: changes based on level type -->
+      <div id="gameplay-area">
+        <!-- HIGH_LOW buttons -->
+        <div id="highlow-area" class="hidden">
+          <div class="high-low-buttons">
+            <button class="high-low-btn high" onclick="Game.answerHighLow('high')">⬆️ 高</button>
+            <button class="high-low-btn low" onclick="Game.answerHighLow('low')">⬇️ 低</button>
+          </div>
+          <button class="btn btn-primary mt-16" onclick="Game.playHighLowPair()">🔊 再听一次</button>
+        </div>
+
+        <!-- RHYTHM_TAP area -->
+        <div id="rhythm-area" class="hidden">
+          <div class="rhythm-indicator" id="rhythm-indicator"></div>
+          <div class="tap-pad" id="tap-pad" onclick="Game.rhythmTap()">🥁</div>
+          <button class="btn btn-primary mt-16" id="btn-start-rhythm" onclick="Game.startRhythm()">▶️ 开始</button>
+        </div>
+      </div>
+
+      <div id="level-piano" class="piano-container"></div>
+    </div>
+
+    <!-- ═══════ SCREEN: Level Complete ═══════ -->
+    <div id="screen-level-complete" class="screen">
+      <div class="level-complete">
+        <div style="font-size:4rem;">🎉</div>
+        <h2 id="level-complete-title">太棒了！</h2>
+        <div class="stars-display" id="level-stars-display">⭐⭐⭐</div>
+        <div class="coins-earned" id="level-coins-earned">+20 🪙</div>
+
+        <div class="level-actions">
+          <button class="btn btn-primary" onclick="Game.backToMap()">🗺️ 返回地图</button>
+          <button class="btn btn-success" id="btn-next-level" onclick="Game.nextLevel()">▶️ 下一关</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ SCREEN: Rewards Shop ═══════ -->
+    <div id="screen-shop" class="screen">
+      <button class="back-btn" onclick="Game.goHome()">← 返回</button>
+      <div class="header-bar">
+        <span class="title">🏪 奖励商店</span>
+        <div class="stats-bar">
+          <span class="stat">🪙 <span id="shop-coins">0</span></span>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="Rewards.showTab('shop')">🎁 商店</button>
+        <button class="tab-btn" onclick="Rewards.showTab('milestones')">🏆 里程碑</button>
+        <button class="tab-btn" onclick="Rewards.showTab('achievements')">🎖️ 成就</button>
+      </div>
+
+      <div id="tab-shop">
+        <div class="shop-grid" id="shop-grid">
+          <!-- Shop items rendered by JS -->
+        </div>
+      </div>
+
+      <div id="tab-milestones" class="hidden">
+        <div id="milestones-list">
+          <!-- Milestones rendered by JS -->
+        </div>
+      </div>
+
+      <div id="tab-achievements" class="hidden">
+        <div class="achievement-grid" id="achievements-grid">
+          <!-- Achievements rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ SCREEN: Warmup Complete ═══════ -->
+    <div id="screen-warmup-complete" class="screen">
+      <div class="level-complete">
+        <div style="font-size:4rem;">🎮</div>
+        <h2>热身完成！</h2>
+        <div class="coins-earned" id="warmup-coins-earned">+5 🪙</div>
+        <p style="color:#888; margin:12px 0;">准备好开始练琴了吗？</p>
+        <div class="level-actions">
+          <button class="btn btn-primary btn-large" onclick="Game.goHome()">🏠 返回首页</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ Reward Celebration Overlay ═══════ -->
+    <div id="reward-overlay" class="modal-overlay hidden">
+      <div class="modal-content text-center">
+        <div style="font-size:4rem;" id="reward-emoji">🎉</div>
+        <h2 id="reward-title">恭喜！</h2>
+        <p id="reward-detail"></p>
+        <div class="coins-earned" id="reward-coins">+30 🪙</div>
+        <button class="btn btn-success btn-large mt-20" onclick="Game.closeRewardOverlay()">🎉 太棒了！</button>
+      </div>
+    </div>
+
+  </div><!-- /app -->
+
+  <!-- Scripts (order matters: dependencies first) -->
+  <script src="js/storage.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/piano-ui.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/rewards.js"></script>
+  <script src="js/adventure-map.js"></script>
+  <script src="js/practice.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    // Boot
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('loaded');
+      Game.init();
+    });
+    // Handle first touch for audio
+    document.addEventListener('pointerdown', () => Audio.handleFirstTouch(), { once: true });
+  </script>
+</body>
+</html>

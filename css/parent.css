@@ -1,0 +1,520 @@
+/* parent.css — Parent dashboard styles */
+
+body.parent-page {
+  background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.parent-app {
+  max-width: 700px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+/* ─── PIN Lock ─── */
+.pin-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+}
+
+.pin-screen h2 {
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+}
+
+.pin-screen p {
+  color: #94a3b8;
+  margin-bottom: 24px;
+}
+
+.pin-input {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.pin-dot {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition: all 0.2s;
+}
+
+.pin-dot.filled {
+  background: #6C63FF;
+  border-color: #6C63FF;
+}
+
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 280px;
+}
+
+.pin-key {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #475569;
+  background: #1e293b;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.pin-key:active {
+  background: #6C63FF;
+  transform: scale(0.95);
+}
+
+.pin-key.delete {
+  font-size: 1.2rem;
+}
+
+.pin-error {
+  color: #f87171;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  min-height: 24px;
+}
+
+/* ─── Dashboard ─── */
+.parent-header {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.parent-header h1 {
+  font-size: 1.3rem;
+}
+
+.parent-header .back-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.parent-tabs {
+  display: flex;
+  background: white;
+  border-bottom: 2px solid #e2e8f0;
+  overflow-x: auto;
+}
+
+.parent-tab {
+  flex: 1;
+  padding: 14px 12px;
+  border: none;
+  background: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.parent-tab.active {
+  color: #6C63FF;
+  border-bottom-color: #6C63FF;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ─── Stats Cards ─── */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #6C63FF;
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* ─── Calendar ─── */
+.practice-calendar {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+}
+
+.practice-calendar h3 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #475569;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-header {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  padding: 4px;
+  font-weight: 600;
+}
+
+.cal-day {
+  text-align: center;
+  padding: 8px 4px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.cal-day.practiced {
+  background: #dcfce7;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.cal-day.today {
+  border: 2px solid #6C63FF;
+  font-weight: 700;
+}
+
+.cal-day.empty {
+  color: transparent;
+}
+
+/* ─── Tasks Manager ─── */
+.task-manager {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 16px;
+}
+
+.task-manager h3 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #475569;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.task-row:last-child {
+  border-bottom: none;
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-info .task-name {
+  font-weight: 600;
+  color: #334155;
+}
+
+.task-info .task-meta {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.task-actions button {
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  font-family: inherit;
+}
+
+.task-actions button:hover {
+  background: #f1f5f9;
+}
+
+.task-actions button.delete {
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+/* ─── Add Task Form ─── */
+.add-task-form {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+  border: 1px dashed #cbd5e1;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.form-group textarea {
+  height: 60px;
+  resize: vertical;
+}
+
+/* ─── Reward Manager ─── */
+.reward-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.reward-emoji {
+  font-size: 1.5rem;
+  width: 40px;
+  text-align: center;
+}
+
+.reward-info {
+  flex: 1;
+}
+
+.reward-info .reward-name {
+  font-weight: 600;
+}
+
+.reward-info .reward-cost {
+  font-size: 0.8rem;
+  color: #f59e0b;
+}
+
+/* ─── Pending Approvals ─── */
+.approval-card {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.approval-card .approval-emoji {
+  font-size: 2rem;
+}
+
+.approval-card .approval-info {
+  flex: 1;
+}
+
+.approval-card .approval-info .approval-name {
+  font-weight: 600;
+}
+
+.approval-card .approval-info .approval-date {
+  font-size: 0.8rem;
+  color: #92400e;
+}
+
+.approval-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.approval-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.approval-actions .approve-btn {
+  background: #22c55e;
+  color: white;
+}
+
+.approval-actions .deny-btn {
+  background: #ef4444;
+  color: white;
+}
+
+/* ─── Settings ─── */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.setting-row .setting-label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.setting-row .setting-desc {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.setting-row input[type="number"] {
+  width: 80px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  font-family: inherit;
+}
+
+.danger-zone {
+  margin-top: 30px;
+  padding: 16px;
+  border: 2px solid #fecaca;
+  border-radius: 12px;
+  background: #fef2f2;
+}
+
+.danger-zone h3 {
+  color: #dc2626;
+  margin-bottom: 12px;
+}
+
+.danger-zone button {
+  padding: 10px 20px;
+  border: 2px solid #dc2626;
+  border-radius: 8px;
+  background: white;
+  color: #dc2626;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 12px;
+  margin-bottom: 8px;
+  font-family: inherit;
+}
+
+/* ─── Practice Logs ─── */
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.log-table th {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 2px solid #e2e8f0;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.log-table td {
+  padding: 8px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+/* ─── Shake animation (for PIN error) ─── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 500px) {
+  .stat-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .parent-tab {
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+}

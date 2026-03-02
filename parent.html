@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Piano Adventure - 家长管理</title>
+  <link rel="stylesheet" href="css/parent.css">
+</head>
+<body class="parent-page">
+
+  <div class="parent-app" id="parent-app">
+
+    <!-- ═══════ PIN Lock Screen ═══════ -->
+    <div id="pin-screen" class="pin-screen">
+      <h2>🔐 家长入口</h2>
+      <p>请输入4位PIN码</p>
+      <div class="pin-input" id="pin-dots">
+        <div class="pin-dot" id="pin-dot-0"></div>
+        <div class="pin-dot" id="pin-dot-1"></div>
+        <div class="pin-dot" id="pin-dot-2"></div>
+        <div class="pin-dot" id="pin-dot-3"></div>
+      </div>
+      <div class="pin-keypad" id="pin-keypad">
+        <button class="pin-key" onclick="Parent.pinInput(1)">1</button>
+        <button class="pin-key" onclick="Parent.pinInput(2)">2</button>
+        <button class="pin-key" onclick="Parent.pinInput(3)">3</button>
+        <button class="pin-key" onclick="Parent.pinInput(4)">4</button>
+        <button class="pin-key" onclick="Parent.pinInput(5)">5</button>
+        <button class="pin-key" onclick="Parent.pinInput(6)">6</button>
+        <button class="pin-key" onclick="Parent.pinInput(7)">7</button>
+        <button class="pin-key" onclick="Parent.pinInput(8)">8</button>
+        <button class="pin-key" onclick="Parent.pinInput(9)">9</button>
+        <button class="pin-key" onclick="Parent.pinInput(0)" style="grid-column:2">0</button>
+        <button class="pin-key delete" onclick="Parent.pinDelete()" style="grid-column:3">⌫</button>
+      </div>
+      <div class="pin-error" id="pin-error"></div>
+    </div>
+
+    <!-- ═══════ Dashboard ═══════ -->
+    <div id="dashboard" style="display:none;">
+      <div class="parent-header">
+        <h1>📊 家长管理后台</h1>
+        <a href="index.html" class="back-link">← 返回游戏</a>
+      </div>
+
+      <div class="parent-tabs">
+        <button class="parent-tab active" onclick="Parent.showTab('overview')">📈 进度概览</button>
+        <button class="parent-tab" onclick="Parent.showTab('tasks')">📚 本周任务</button>
+        <button class="parent-tab" onclick="Parent.showTab('rewards')">🎁 奖励管理</button>
+        <button class="parent-tab" onclick="Parent.showTab('settings')">⚙️ 设置</button>
+      </div>
+
+      <!-- ═══════ Tab 1: Overview ═══════ -->
+      <div id="tab-overview" class="tab-content active">
+        <div class="stat-cards" id="stat-cards">
+          <div class="stat-card">
+            <div class="stat-value" id="p-streak">0</div>
+            <div class="stat-label">当前连续天数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="p-longest">0</div>
+            <div class="stat-label">最长连续记录</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="p-total-mins">0</div>
+            <div class="stat-label">总练琴分钟</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="p-total-sessions">0</div>
+            <div class="stat-label">总练琴次数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="p-coins">0</div>
+            <div class="stat-label">金币</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="p-stars">0</div>
+            <div class="stat-label">总星星</div>
+          </div>
+        </div>
+
+        <!-- This week stats -->
+        <div class="task-manager">
+          <h3>📅 本周练琴</h3>
+          <div id="week-stats"></div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="practice-calendar">
+          <h3>📅 练琴日历 (本月)</h3>
+          <div class="calendar-grid" id="calendar-grid"></div>
+        </div>
+
+        <!-- Recent practice logs -->
+        <div class="task-manager">
+          <h3>📋 最近练琴记录</h3>
+          <table class="log-table">
+            <thead>
+              <tr><th>日期</th><th>时长</th><th>暂停</th><th>评价</th></tr>
+            </thead>
+            <tbody id="log-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════ Tab 2: Weekly Tasks ═══════ -->
+      <div id="tab-tasks" class="tab-content">
+        <div class="task-manager">
+          <h3>📚 本周练习任务 <span id="week-range"></span></h3>
+          <div id="task-list"></div>
+          <button class="btn btn-primary mt-12" onclick="Parent.showAddTaskForm()" id="btn-add-task">+ 添加任务</button>
+
+          <div id="add-task-form" class="add-task-form" style="display:none;">
+            <div class="form-group">
+              <label>任务名称</label>
+              <input type="text" id="task-name" placeholder="例如：C大调音阶">
+            </div>
+            <div class="form-group">
+              <label>频率</label>
+              <select id="task-frequency">
+                <option value="daily">每天</option>
+                <option value="mon,wed,fri">周一/三/五</option>
+                <option value="tue,thu">周二/四</option>
+                <option value="sat,sun">周末</option>
+                <option value="mon">周一</option>
+                <option value="tue">周二</option>
+                <option value="wed">周三</option>
+                <option value="thu">周四</option>
+                <option value="fri">周五</option>
+                <option value="sat">周六</option>
+                <option value="sun">周日</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>建议时长 (分钟)</label>
+              <input type="number" id="task-duration" value="10" min="1" max="60">
+            </div>
+            <div class="form-group">
+              <label>备注 (可选)</label>
+              <textarea id="task-notes" placeholder="老师的具体要求..."></textarea>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-success" onclick="Parent.saveTask()">保存</button>
+              <button class="btn" style="background:#e2e8f0;" onclick="Parent.cancelAddTask()">取消</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:16px;">
+          <button class="btn" style="background:#e2e8f0;flex:1" onclick="Parent.copyLastWeek()">📋 复制上周任务</button>
+          <div class="form-group" style="flex:1;margin:0;">
+            <label>每日练琴时长目标 (分钟)</label>
+            <input type="number" id="practice-duration-setting" value="30" min="5" max="120"
+              onchange="Parent.updatePracticeDuration(this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════ Tab 3: Rewards ═══════ -->
+      <div id="tab-rewards" class="tab-content">
+        <!-- Pending approvals -->
+        <div class="task-manager">
+          <h3>⏳ 待审批兑换</h3>
+          <div id="pending-list"></div>
+        </div>
+
+        <!-- Reward catalog -->
+        <div class="task-manager">
+          <h3>🎁 奖励目录</h3>
+          <div id="reward-catalog"></div>
+          <button class="btn btn-primary mt-12" onclick="Parent.showAddRewardForm()">+ 添加奖励</button>
+
+          <div id="add-reward-form" class="add-task-form" style="display:none;">
+            <div class="form-group">
+              <label>名称</label>
+              <input type="text" id="reward-name-input" placeholder="例如：贴纸">
+            </div>
+            <div class="form-group">
+              <label>Emoji</label>
+              <input type="text" id="reward-emoji-input" placeholder="⭐" maxlength="4">
+            </div>
+            <div class="form-group">
+              <label>金币价格</label>
+              <input type="number" id="reward-cost-input" value="50" min="1">
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-success" onclick="Parent.saveReward()">保存</button>
+              <button class="btn" style="background:#e2e8f0;" onclick="Parent.cancelAddReward()">取消</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="task-manager">
+          <h3>🏆 里程碑活动</h3>
+          <div id="milestone-catalog"></div>
+          <button class="btn btn-primary mt-12" onclick="Parent.showAddMilestoneForm()">+ 添加里程碑</button>
+
+          <div id="add-milestone-form" class="add-task-form" style="display:none;">
+            <div class="form-group">
+              <label>活动名称</label>
+              <input type="text" id="milestone-name-input" placeholder="例如：去公园">
+            </div>
+            <div class="form-group">
+              <label>Emoji</label>
+              <input type="text" id="milestone-emoji-input" placeholder="🎢" maxlength="4">
+            </div>
+            <div class="form-group">
+              <label>需要连续练琴天数</label>
+              <input type="number" id="milestone-days-input" value="7" min="1">
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-success" onclick="Parent.saveMilestone()">保存</button>
+              <button class="btn" style="background:#e2e8f0;" onclick="Parent.cancelAddMilestone()">取消</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════ Tab 4: Settings ═══════ -->
+      <div id="tab-settings" class="tab-content">
+        <div class="task-manager">
+          <h3>⚙️ 设置</h3>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">修改PIN码</div>
+              <div class="setting-desc">当前4位数字</div>
+            </div>
+            <div>
+              <input type="number" id="new-pin" placeholder="新PIN" maxlength="4" style="width:100px;">
+              <button class="btn" style="background:#6C63FF;color:white;padding:8px 16px;font-size:0.85rem;"
+                onclick="Parent.changePIN()">保存</button>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">金币倍率</div>
+              <div class="setting-desc">调整金币获取速度</div>
+            </div>
+            <input type="number" id="coin-multiplier" step="0.1" min="0.5" max="3"
+              onchange="Parent.updateSetting('coinMultiplier', parseFloat(this.value))">
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">每日关卡上限</div>
+              <div class="setting-desc">每天可以玩的关卡数量</div>
+            </div>
+            <input type="number" id="daily-level-cap" min="1" max="10"
+              onchange="Parent.updateSetting('dailyLevelCap', parseInt(this.value))">
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label">练琴时长 (分钟)</div>
+              <div class="setting-desc">每日练琴计时器时长</div>
+            </div>
+            <input type="number" id="practice-duration-input" min="5" max="120"
+              onchange="Parent.updateSetting('practiceDuration', parseInt(this.value))">
+          </div>
+        </div>
+
+        <!-- Data management -->
+        <div class="danger-zone">
+          <h3>⚠️ 数据管理</h3>
+          <button onclick="Parent.exportData()">📤 导出数据 (JSON)</button>
+          <button onclick="Parent.importData()">📥 导入数据</button>
+          <button onclick="Parent.resetAll()">🗑️ 重置所有进度</button>
+          <input type="file" id="import-file" accept=".json" style="display:none;" onchange="Parent.handleImport(event)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/parent.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => Parent.init());
+  </script>
+</body>
+</html>

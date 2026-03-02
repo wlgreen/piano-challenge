@@ -1,0 +1,1154 @@
+/* style.css — Core styles, layout, responsive */
+
+/* ─── Reset & Base ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  min-height: 100vh;
+  color: #333;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ─── App Container ─── */
+#app {
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 40px rgba(0,0,0,0.2);
+}
+
+/* ─── Screens ─── */
+.screen {
+  display: none;
+  padding: 20px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.screen.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Header Bar ─── */
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #6C63FF, #8B5CF6);
+  color: white;
+  border-radius: 0 0 20px 20px;
+  margin: -20px -20px 20px -20px;
+  box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+}
+
+.header-bar .title {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.stats-bar {
+  display: flex;
+  gap: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stats-bar .stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  touch-action: manipulation;
+  min-height: 60px;
+  min-width: 60px;
+  font-family: inherit;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6C63FF, #8B5CF6);
+  color: white;
+  box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+}
+
+.btn-primary:active {
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.3);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-large {
+  padding: 20px 36px;
+  font-size: 1.3rem;
+  border-radius: 20px;
+  min-height: 80px;
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn .btn-emoji {
+  font-size: 1.8em;
+}
+
+.btn .btn-sub {
+  font-size: 0.75em;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* ─── Big Action Cards (Daily Hub) ─── */
+.action-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  border: 3px solid transparent;
+  min-height: 90px;
+}
+
+.action-card:active {
+  transform: scale(0.97);
+}
+
+.action-card.done {
+  border-color: #22c55e;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+.action-card.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.action-card.locked:active {
+  transform: none;
+}
+
+.action-card.current {
+  border-color: #6C63FF;
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.2);
+}
+
+.action-card .card-icon {
+  font-size: 2.5rem;
+  width: 60px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.action-card .card-content {
+  flex: 1;
+}
+
+.action-card .card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.action-card .card-sub {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.action-card .card-status {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* ─── Daily Hub ─── */
+.daily-greeting {
+  text-align: center;
+  margin: 10px 0 20px;
+}
+
+.daily-greeting h2 {
+  font-size: 1.5rem;
+  color: #6C63FF;
+}
+
+.daily-greeting .cat-face {
+  font-size: 3rem;
+  display: block;
+  margin: 8px 0;
+}
+
+/* ─── Practice Screen ─── */
+.practice-timer {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+.timer-display {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #6C63FF;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+}
+
+.timer-label {
+  font-size: 1rem;
+  color: #999;
+  margin-top: 4px;
+}
+
+.timer-ring {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.timer-ring svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.timer-ring .ring-bg {
+  stroke: #e5e7eb;
+  fill: none;
+  stroke-width: 8;
+}
+
+.timer-ring .ring-progress {
+  stroke: #6C63FF;
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.practice-tasks {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+.practice-tasks h3 {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-item .task-check {
+  font-size: 1.3rem;
+}
+
+.task-item .task-duration {
+  margin-left: auto;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+/* Practice cat companion */
+.practice-cat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.cat-bubble {
+  background: white;
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-bottom: 8px;
+  max-width: 200px;
+  font-size: 0.9rem;
+  position: relative;
+  animation: bounceIn 0.3s ease;
+}
+
+.cat-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid white;
+}
+
+.cat-emoji {
+  font-size: 3rem;
+  text-align: center;
+}
+
+/* ─── Practice Complete / Confirmation ─── */
+.confirm-section {
+  background: #f0f4ff;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+  border: 2px dashed #6C63FF;
+}
+
+.math-gate {
+  text-align: center;
+  margin: 16px 0;
+}
+
+.math-gate .math-question {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.math-gate .math-options {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.math-gate .math-option {
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: 3px solid #6C63FF;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  min-width: 60px;
+  transition: all 0.1s;
+}
+
+.math-gate .math-option:active {
+  transform: scale(0.95);
+  background: #6C63FF;
+  color: white;
+}
+
+.rating-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.rating-btn {
+  padding: 12px 20px;
+  border: 3px solid #ddd;
+  border-radius: 12px;
+  background: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-align: center;
+}
+
+.rating-btn.selected {
+  border-color: #6C63FF;
+  background: #f0f4ff;
+}
+
+.rating-btn:active {
+  transform: scale(0.95);
+}
+
+/* ─── Adventure Map ─── */
+.world-selector {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.world-tab {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: white;
+  border: 2px solid #ddd;
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.1s;
+  flex-shrink: 0;
+}
+
+.world-tab.active {
+  border-color: #6C63FF;
+  background: #f0f4ff;
+  color: #6C63FF;
+}
+
+.world-tab.locked {
+  opacity: 0.4;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.level-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.1s;
+  min-height: 100px;
+  border: 3px solid transparent;
+}
+
+.level-node:active {
+  transform: scale(0.95);
+}
+
+.level-node.completed {
+  border-color: #22c55e;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+.level-node.current {
+  border-color: #6C63FF;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.level-node.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #f0f0f0;
+}
+
+.level-node.locked:active {
+  transform: none;
+}
+
+.level-node .level-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #6C63FF;
+}
+
+.level-node .level-name {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.level-node .level-stars {
+  margin-top: 8px;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  50% { box-shadow: 0 4px 20px rgba(108, 99, 255, 0.3); }
+}
+
+/* ─── World Header ─── */
+.world-header {
+  text-align: center;
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.world-header .world-emoji {
+  font-size: 2.5rem;
+}
+
+.world-header .world-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.world-header .world-desc {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* ─── Level Play Screen ─── */
+.level-instruction {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  margin: 16px 0;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.level-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6C63FF, #8B5CF6);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+/* HIGH_LOW specific */
+.high-low-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.high-low-btn {
+  padding: 24px 40px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  min-width: 120px;
+}
+
+.high-low-btn:active {
+  transform: scale(0.93);
+}
+
+.high-low-btn.high {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+}
+
+.high-low-btn.low {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  color: white;
+}
+
+/* RHYTHM_TAP */
+.rhythm-area {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.tap-pad {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.08s;
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+}
+
+.tap-pad:active {
+  transform: scale(0.92);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.rhythm-indicator {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.beat-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ddd;
+  transition: all 0.15s;
+}
+
+.beat-dot.active {
+  background: #f59e0b;
+  transform: scale(1.3);
+}
+
+.beat-dot.hit {
+  background: #22c55e;
+}
+
+.beat-dot.missed {
+  background: #fca5a5;
+}
+
+/* ─── Rewards Shop ─── */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.shop-item {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.1s;
+  border: 2px solid transparent;
+}
+
+.shop-item:active {
+  transform: scale(0.97);
+}
+
+.shop-item .shop-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.shop-item .shop-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.shop-item .shop-cost {
+  font-size: 0.9rem;
+  color: #f59e0b;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.shop-item.affordable {
+  border-color: #22c55e;
+}
+
+.shop-item.too-expensive {
+  opacity: 0.6;
+}
+
+/* ─── Achievements ─── */
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.achievement-badge {
+  text-align: center;
+  padding: 12px 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.achievement-badge.locked {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.achievement-badge .badge-emoji {
+  font-size: 2rem;
+}
+
+.achievement-badge .badge-name {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* ─── Milestone Progress ─── */
+.milestone-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 12px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.milestone-card .milestone-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.milestone-card .milestone-emoji {
+  font-size: 2rem;
+}
+
+.milestone-card .milestone-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.milestone-card .milestone-detail {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* ─── Rest Reminder Overlay ─── */
+.rest-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.rest-card {
+  background: white;
+  border-radius: 24px;
+  padding: 30px;
+  text-align: center;
+  max-width: 350px;
+  margin: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.rest-card .rest-emoji {
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+
+.rest-card .rest-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.rest-card .rest-timer {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #6C63FF;
+  margin: 16px 0;
+}
+
+/* ─── Encouragement Popup ─── */
+.encouragement-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 20px;
+  padding: 24px 32px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  z-index: 999;
+  animation: popupBounceIn 0.4s ease;
+}
+
+@keyframes popupBounceIn {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(1.1); }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.encouragement-popup .enc-emoji {
+  font-size: 3rem;
+}
+
+.encouragement-popup .enc-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 8px;
+  color: #555;
+}
+
+/* ─── Tab navigation (for achievements/shop) ─── */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 4px;
+  margin: 12px 0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.tab-btn.active {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: #6C63FF;
+}
+
+/* ─── Modal ─── */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* ─── Warmup Screen ─── */
+.warmup-game {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.warmup-game .warmup-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.warmup-game .warmup-instruction {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+/* Flashcard */
+.flashcard {
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 800;
+  color: #6C63FF;
+  animation: bounceIn 0.3s ease;
+}
+
+/* ─── Back button ─── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.06);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.1s;
+  font-family: inherit;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.back-btn:active {
+  background: rgba(0,0,0,0.12);
+}
+
+/* ─── Level complete overlay ─── */
+.level-complete {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.level-complete .stars-display {
+  font-size: 3rem;
+  letter-spacing: 8px;
+  margin: 16px 0;
+}
+
+.level-complete .coins-earned {
+  font-size: 1.3rem;
+  color: #f59e0b;
+  font-weight: 700;
+  margin: 12px 0;
+}
+
+.level-complete .level-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* ─── Welcome / Returning ─── */
+.welcome-message {
+  text-align: center;
+  padding: 20px;
+  margin: 16px 0;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 16px;
+}
+
+.welcome-message .welcome-emoji {
+  font-size: 3rem;
+}
+
+.welcome-message .welcome-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #92400e;
+  margin-top: 8px;
+}
+
+/* ─── Practice controls ─── */
+.practice-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* ─── Streaks display ─── */
+.streak-display {
+  text-align: center;
+  padding: 12px;
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  border-radius: 12px;
+  margin: 12px 0;
+}
+
+.streak-display .streak-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ea580c;
+}
+
+.streak-display .streak-label {
+  font-size: 0.85rem;
+  color: #9a3412;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 500px) {
+  .screen {
+    padding: 12px;
+  }
+
+  .header-bar {
+    margin: -12px -12px 12px -12px;
+    padding: 10px 12px;
+  }
+
+  .header-bar .title {
+    font-size: 1.1rem;
+  }
+
+  .stats-bar {
+    gap: 10px;
+    font-size: 0.85rem;
+  }
+
+  .btn-large {
+    padding: 16px 24px;
+    font-size: 1.1rem;
+    min-height: 64px;
+  }
+
+  .level-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .level-node {
+    padding: 12px 8px;
+    min-height: 85px;
+  }
+
+  .shop-grid {
+    gap: 10px;
+  }
+
+  .achievement-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+}
+
+/* Landscape optimization */
+@media (orientation: landscape) and (max-height: 500px) {
+  .timer-ring {
+    width: 140px;
+    height: 140px;
+  }
+
+  .timer-display {
+    font-size: 2.5rem;
+  }
+
+  .action-cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .action-card {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+/* ─── Utility ─── */
+.text-center { text-align: center; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.gap-12 { gap: 12px; }
+.hidden { display: none !important; }
